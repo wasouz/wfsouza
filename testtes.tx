@@ -1,0 +1,18 @@
+Filesystem                 Size  Used Avail Use% Mounted on
+devtmpfs                   3.9G     0  3.9G   0% /dev
+tmpfs                      3.9G     0  3.9G   0% /dev/shm
+tmpfs                      3.9G  434M  3.4G  12% /run
+tmpfs                      3.9G     0  3.9G   0% /sys/fs/cgroup
+/dev/mapper/rootvg-rootlv   20G  228M   20G   2% /
+/dev/mapper/rootvg-usrlv    10G  2.0G  8.1G  20% /usr
+/dev/mapper/rootvg-homelv  9.0G  1.8G  7.3G  20% /home
+/dev/sda2                  494M  164M  330M  34% /boot
+/dev/mapper/rootvg-optlv   2.0G  627M  1.4G  31% /opt
+/dev/sda1                  500M  9.9M  490M   2% /boot/efi
+/dev/mapper/rootvg-varlv    20G  5.5G   15G  28% /var
+/dev/sdb1                   16G   45M   15G   1% /mnt
+10.120.14.4:/export        375G   39G  318G  11% /export
+10.120.22.4:/export        501G   39G  439G   9% /blue
+10.120.18.4:/export        376G   55G  305G  16% /green
+tmpfs                      783M     0  783M   0% /run/user/995
+tmpfs                      783M     0  783M   0% /run/user/1000
