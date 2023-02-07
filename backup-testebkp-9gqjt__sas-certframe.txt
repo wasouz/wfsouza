@@ -1,0 +1,30 @@
+INFO  2023-02-07 15:15:36.235 +0000 [sas-certframe] - ActionBootstrap ActionBootstrap bootstrap full [c.Cli.Name:sas-certframe bootstrap c.Cli.Version:3.24.3]
+INFO  2023-02-07 15:15:36.235 +0000 [sas-certframe] - CertframeCoreConfiguration.inferSecurityArtifactsDirectory Successfully reconciled SAS_SECURITY_ARTIFACTS_DIR [artifactsDirectory:/security]
+INFO  2023-02-07 15:15:36.237 +0000 [sas-certframe] - CertificateBootstrapper.GenerateServerCertificates Generating server certificates with certificate generator [generator:cert-manager namespace:viya4 podName:backup-testebkp-9gqjt]
+INFO  2023-02-07 15:15:36.334 +0000 [sas-certframe] - CertManagerAdapter.GetCertificate Failed to get certificate; certificate does not exist [name:backup-testebkp-9gqjt]
+INFO  2023-02-07 15:15:36.334 +0000 [sas-certframe] - DoesCertificateExist Certificate does not exist [name:backup-testebkp-9gqjt]
+INFO  2023-02-07 15:15:36.334 +0000 [sas-certframe] - createCertificate Attempting to create new certificate [name:backup-testebkp-9gqjt]
+INFO  2023-02-07 15:15:36.447 +0000 [sas-certframe] - createCertificate The certificate object was successfully created [name:backup-testebkp-9gqjt]
+INFO  2023-02-07 15:15:37.460 +0000 [sas-certframe] - CertificateReadyOperation.Perform Certificate is ready for consumption
+INFO  2023-02-07 15:15:37.460 +0000 [sas-certframe] - validateCertificateSANs Successfully validated that the cert-manager certificate contains expected SAN values
+INFO  2023-02-07 15:15:37.467 +0000 [sas-certframe] - CoreGenerator.Write Creating certificate PEM disk artifacts with freshly minted certificate and private key
+INFO  2023-02-07 15:15:37.473 +0000 [sas-certframe] - CoreGenerator.writeAsPem Successfully created CA certificate PEM file [fileName:/security/ca.crt]
+INFO  2023-02-07 15:15:37.476 +0000 [sas-certframe] - CoreGenerator.writeAsPem Successfully created server certificate PEM file [fileName:/security/tls.crt]
+INFO  2023-02-07 15:15:37.478 +0000 [sas-certframe] - CoreGenerator.writeAsPem Successfully created server certificate private key PEM file [fileName:/security/tls.key privateKeyFileMode:-rw-------]
+INFO  2023-02-07 15:15:37.490 +0000 [sas-certframe] - CreateTemporaryCaChainFileFromSecret ca.crt has been written to caFile [caFile.Name:/security/temp/trustbundles/sas-ingress-certificate-gchk9kt2gb_ca.crt]
+INFO  2023-02-07 15:15:37.492 +0000 [sas-certframe] - CreateTemporaryCaChainFileFromSecret tls.crt has been written to tlsFile [tlsFile.Name:/security/temp/trustbundles/sas-ingress-certificate-gchk9kt2gb_tls.crt]
+INFO  2023-02-07 15:15:37.495 +0000 [sas-certframe] - TruststoreGenerator.addIngressCaChainToTruststore Adding the ingress CA chain file to PEM truststore
+INFO  2023-02-07 15:15:37.560 +0000 [sas-certframe] - CreateTemporaryCaChainFileFromSecret ca.crt has been written to caFile [caFile.Name:/security/temp/trustbundles/sas-viya-ca-certificate-secret_ca.crt]
+INFO  2023-02-07 15:15:37.563 +0000 [sas-certframe] - CreateTemporaryCaChainFileFromSecret tls.crt has been written to tlsFile [tlsFile.Name:/security/temp/trustbundles/sas-viya-ca-certificate-secret_tls.crt]
+INFO  2023-02-07 15:15:37.565 +0000 [sas-certframe] - TruststoreGenerator.addSasCaChainToTruststore Adding the SAS CA chain file to PEM truststore
+INFO  2023-02-07 15:15:37.636 +0000 [sas-certframe] - TruststoreGenerator.addAdditionalCaCertsToTruststore Getting additional CA certificates for addition to PEM truststore [AdditionalCaCertsDir:/customer-provided-ca-certificates truststorePath:/security/temp/trustbundles/ca-bundle.pem]
+INFO  2023-02-07 15:15:37.657 +0000 [sas-certframe] - CreateTemporaryCaChainFileFromSecret ca.crt has been written to caFile [caFile.Name:/security/temp/trustbundles/sas-ingress-certificate-gchk9kt2gb_ca.crt]
+INFO  2023-02-07 15:15:37.662 +0000 [sas-certframe] - CreateTemporaryCaChainFileFromSecret tls.crt has been written to tlsFile [tlsFile.Name:/security/temp/trustbundles/sas-ingress-certificate-gchk9kt2gb_tls.crt]
+INFO  2023-02-07 15:15:37.665 +0000 [sas-certframe] - TruststoreGenerator.addIngressCaChainToTruststore Adding the ingress CA chain file to PEM truststore
+INFO  2023-02-07 15:15:37.759 +0000 [sas-certframe] - CreateTemporaryCaChainFileFromSecret ca.crt has been written to caFile [caFile.Name:/security/temp/trustbundles/sas-viya-ca-certificate-secret_ca.crt]
+INFO  2023-02-07 15:15:37.764 +0000 [sas-certframe] - CreateTemporaryCaChainFileFromSecret tls.crt has been written to tlsFile [tlsFile.Name:/security/temp/trustbundles/sas-viya-ca-certificate-secret_tls.crt]
+INFO  2023-02-07 15:15:37.766 +0000 [sas-certframe] - TruststoreGenerator.addSasCaChainToTruststore Adding the SAS CA chain file to PEM truststore
+INFO  2023-02-07 15:15:37.778 +0000 [sas-certframe] - TruststoreGenerator.addAdditionalCaCertsToTruststore Getting additional CA certificates for addition to PEM truststore [AdditionalCaCertsDir:/customer-provided-ca-certificates truststorePath:/security/temp/trustbundles/cacerts]
+INFO  2023-02-07 15:15:37.778 +0000 [sas-certframe] - ActionBootstrap SSH keypair generation not requested, no need to generate SSH keypairs
+INFO  2023-02-07 15:15:37.778 +0000 [sas-certframe] - ActionBootstrap Token generation not requested, no need to generate tokens
+INFO  2023-02-07 15:15:37.779 +0000 [sas-certframe] - ActionBootstrap Certframe init operations completed successfully
