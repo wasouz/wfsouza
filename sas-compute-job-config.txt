@@ -1,0 +1,802 @@
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"PodTemplate","metadata":{"annotations":{"launcher.sas.com/jobContainerName":"sas-programming-environment","sas.com/certificate-file-format":"pem","sas.com/component-name":"sas-compute","sas.com/component-version":"1.56.4-20220202.1643835672330","sas.com/config-init-mode":"initcontainer","sas.com/kustomize-base":"sas-programming-environment","sas.com/sas-access-config":"true","sas.com/sas-kerberos-config":"true","sas.com/sas-sssd-config":"true","sas.com/tls-mode":"full-stack","sas.com/version":"1.56.4"},"labels":{"sas.com/admin":"namespace","sas.com/deployment":"sas-viya","sas.com/template-intent":"sas-launcher","workload.sas.com/class":"compute"},"name":"sas-compute-job-config","namespace":"viya4"},"template":{"metadata":{"annotations":{"sas.com/certificate-file-format":"pem","sas.com/kustomize-base":"sas-programming-environment","sas.com/tls-enabled-ports":"all","sas.com/tls-mode":"full-stack","seccomp.security.alpha.kubernetes.io/pod":"runtime/default","sidecar.istio.io/inject":"false"},"labels":{"launcher.sas.com/job-type":"compute-server"}},"spec":{"affinity":{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"workload.sas.com/class","operator":"In","values":["compute"]}],"matchFields":[]},"weight":100},{"preference":{"matchExpressions":[{"key":"workload.sas.com/class","operator":"NotIn","values":["cas","stateless","stateful"]}],"matchFields":[]},"weight":50}],"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.azure.com/mode","operator":"NotIn","values":["system"]}],"matchFields":[]}]}},"podAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[],"requiredDuringSchedulingIgnoredDuringExecution":[]},"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[],"requiredDuringSchedulingIgnoredDuringExecution":[]}},"automountServiceAccountToken":true,"containers":[{"args":[],"command":[],"env":[{"name":"SAS_K8S_POD_NAME","valueFrom":{"fieldRef":{"apiVersion":"v1","fieldPath":"metadata.name"}}},{"name":"SAS_K8S_NAMESPACE","valueFrom":{"fieldRef":{"apiVersion":"v1","fieldPath":"metadata.namespace"}}},{"name":"SAS_LICENSE","valueFrom":{"secretKeyRef":{"key":"SAS_LICENSE","name":"sas-license-9b5h2d4mck"}}},{"name":"SAS_URL_SERVICE_TEMPLATE","valueFrom":{"configMapKeyRef":{"key":"SAS_URL_SERVICE_TEMPLATE","name":"sas-shared-config-g2h4f4c2db"}}},{"name":"SASCLOUDNATIVE","value":"1"},{"name":"LAUNCH_AS_JOB","value":"true"},{"name":"COMPUTESERVER_USER_CONFIG","value":"/config"},{"name":"COMPUTESERVER_VAR_PATH","value":"/opt/sas/viya/config/var"}],"envFrom":[{"configMapRef":{"name":"sas-tls-config-f8ccd48c6m"}},{"configMapRef":{"name":"sas-access-config-57fdtkg7d6"}},{"configMapRef":{"name":"sas-deployment-metadata-6g8f455dkb"}},{"configMapRef":{"name":"sas-launcher-lockdown-config-g96dc2km8g"}},{"configMapRef":{"name":"sas-programming-environment-path-config-dt5gfd629h"}},{"configMapRef":{"name":"sas-compute-server-config-6b9kc94k8g"}},{"configMapRef":{"name":"sas-shared-config-g2h4f4c2db"}},{"configMapRef":{"name":"sas-open-source-config-python-hc57h6hmkk"}}],"image":"cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-programming-environment:1.27.29-20220302.1646244904986","name":"sas-programming-environment","ports":[],"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"add":[],"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true},"volumeDevices":[],"volumeMounts":[{"mountPath":"/tmp","name":"tmp"},{"mountPath":"/sasuser","name":"sasuser"},{"mountPath":"/sashelp","name":"sashelp"},{"mountPath":"/config","name":"config"},{"mountPath":"/opt/sas/viya/config/var","name":"viya"},{"mountPath":"/opt/sas/viya/home/commonfiles","name":"commonfilesvols","readOnly":true},{"mountPath":"/security","name":"security"},{"mountPath":"/opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts","name":"security","subPath":"cacerts"},{"mountPath":"/opt/sas/viya/config/etc/SASSecurityCertificateFramework/private","name":"security","subPath":"private"},{"mountPath":"/mnt/viya-share/data","name":"nfs-data"},{"mountPath":"/mnt/viya-share/homes","name":"nfs-homes"},{"mountPath":"/export/pvs/viya4-nfsdata/sasdata","name":"nfs-sasdata"},{"mountPath":"/export/pvs/viya4-nfsdata/data-access/access-clients/python/Python-3.8.5","name":"python-volume","readOnly":true},{"mountPath":"/opt/sas/viya/config/data/modelsvr/astore","name":"astores-volume","subPath":"models"},{"mountPath":"/opt/sas/viya/config/data/modelsvr/resources","name":"astores-volume","subPath":"resources"},{"mountPath":"/rdutil","name":"sas-rdutil-dir"},{"mountPath":"/opt/sas/viya/home/share/refdata/qkb","name":"sas-quality-knowledge-base-volume"},{"mountPath":"/export/pvs/viya4-nfsdata","name":"nfsdata"}]}],"hostAliases":[],"imagePullSecrets":[{"name":"sas-image-pull-secrets-5g77d6bg8h"}],"initContainers":[{"env":[{"name":"KUBE_POD_NAME","valueFrom":{"fieldRef":{"fieldPath":"metadata.name"}}},{"name":"SAS_CERTFRAME_TOKEN_DIR","value":"/certframe-token"},{"name":"SAS_ADDITIONAL_CA_CERTIFICATES_DIR","value":"/customer-provided-ca-certificates"}],"envFrom":[{"configMapRef":{"name":"sas-certframe-config-2ch97fd95b"}},{"configMapRef":{"name":"sas-certframe-ingress-certificate-config-cmm2t44t88"}},{"configMapRef":{"name":"sas-certframe-user-config-kfckf2c4g8"}}],"image":"cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-certframe:3.24.3-20220208.1644359596455","name":"sas-certframe","resources":{"limits":{"cpu":"500m","memory":"500Mi"},"requests":{"cpu":"50m","memory":"50Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true},"volumeMounts":[{"mountPath":"/certframe-token","name":"certframe-token"},{"mountPath":"/security","name":"security"},{"mountPath":"/customer-provided-ca-certificates","name":"customer-provided-ca-certificates"}]},{"args":[],"command":[],"env":[{"name":"SAS_K8S_POD_NAME","valueFrom":{"fieldRef":{"apiVersion":"v1","fieldPath":"metadata.name"}}},{"name":"SAS_K8S_NAMESPACE","valueFrom":{"fieldRef":{"apiVersion":"v1","fieldPath":"metadata.namespace"}}},{"name":"SSL_CERT_FILE","value":"/security/trustedcerts.pem"}],"envFrom":[{"configMapRef":{"name":"sas-go-config-tbg2228dk9"}},{"configMapRef":{"name":"sas-shared-config-g2h4f4c2db"}},{"secretRef":{"name":"sas-consul-client"}},{"configMapRef":{"name":"sas-programming-environment-path-config-dt5gfd629h"}},{"configMapRef":{"name":"sas-deployment-metadata-6g8f455dkb"}},{"configMapRef":{"name":"sas-programming-environment-java-policy-config-b5dc9m8dfg"}},{"configMapRef":{"name":"sas-access-config-57fdtkg7d6"}},{"configMapRef":{"name":"sas-compute-server-config-6b9kc94k8g"}}],"image":"cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-config-init:1.11.4-20220310.1646911095636","name":"sas-config-init","ports":[],"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"add":[],"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsGroup":1001,"runAsUser":1001},"volumeDevices":[],"volumeMounts":[{"mountPath":"/tmp","name":"config-init-tmp"},{"mountPath":"/config","name":"config"},{"mountPath":"/opt/sas/viya/config/var","name":"viya"},{"mountPath":"/opt/sas/viya/home/commonfiles","name":"commonfilesvols","readOnly":true},{"mountPath":"/security","name":"security"}]}],"readinessGates":[],"securityContext":{"runAsNonRoot":true,"supplementalGroups":[],"sysctls":[]},"serviceAccountName":"sas-programming-environment","tolerations":[{"effect":"NoSchedule","key":"workload.sas.com/class","operator":"Equal","value":"compute"}],"volumes":[{"emptyDir":{},"name":"tmp"},{"emptyDir":{},"name":"config-init-tmp"},{"emptyDir":{},"name":"sasuser"},{"emptyDir":{},"name":"sashelp"},{"emptyDir":{},"name":"config"},{"hostPath":{"path":"/mnt","type":"Directory"},"name":"viya"},{"name":"commonfilesvols","persistentVolumeClaim":{"claimName":"sas-commonfiles","readOnly":true}},{"name":"certframe-token","secret":{"secretName":"sas-certframe-token"}},{"emptyDir":{},"name":"security"},{"configMap":{"name":"sas-customer-provided-ca-certificates-29kdmk686c"},"name":"customer-provided-ca-certificates"},{"name":"nfs-data","nfs":{"path":"/export/viya4/data","server":"10.120.14.4"}},{"name":"nfs-homes","nfs":{"path":"/export/viya4/homes","server":"10.120.14.4"}},{"name":"nfs-sasdata","nfs":{"path":"/export/pvs/viya4-nfsdata/sasdata","server":"10.120.14.4"}},{"name":"python-volume","nfs":{"path":"/export/pvs/viya4-nfsdata/data-access/access-clients/python/Python-3.8.5","server":"10.120.14.4"}},{"name":"astores-volume","persistentVolumeClaim":{"claimName":"sas-microanalytic-score-astores"}},{"name":"sas-quality-knowledge-base-volume","persistentVolumeClaim":{"claimName":"sas-quality-knowledge-base"}},{"configMap":{"defaultMode":493,"name":"sas-qkb-management-scripts"},"name":"sas-rdutil-dir"},{"name":"nfsdata","nfs":{"path":"/export/pvs/viya4-nfsdata","server":"10.120.14.4"}}]}}}
+    launcher.sas.com/jobContainerName: sas-programming-environment
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-compute
+    sas.com/component-version: 1.56.4-20220202.1643835672330
+    sas.com/config-init-mode: initcontainer
+    sas.com/kustomize-base: sas-programming-environment
+    sas.com/sas-access-config: "true"
+    sas.com/sas-kerberos-config: "true"
+    sas.com/sas-sssd-config: "true"
+    sas.com/tls-mode: full-stack
+    sas.com/version: 1.56.4
+  creationTimestamp: "2022-03-15T14:52:12Z"
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/template-intent: sas-launcher
+    workload.sas.com/class: compute
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:kubectl.kubernetes.io/last-applied-configuration: {}
+          f:launcher.sas.com/jobContainerName: {}
+          f:sas.com/certificate-file-format: {}
+          f:sas.com/component-name: {}
+          f:sas.com/component-version: {}
+          f:sas.com/config-init-mode: {}
+          f:sas.com/kustomize-base: {}
+          f:sas.com/sas-access-config: {}
+          f:sas.com/sas-kerberos-config: {}
+          f:sas.com/sas-sssd-config: {}
+          f:sas.com/tls-mode: {}
+          f:sas.com/version: {}
+        f:labels:
+          .: {}
+          f:sas.com/admin: {}
+          f:sas.com/deployment: {}
+          f:sas.com/template-intent: {}
+          f:workload.sas.com/class: {}
+      f:template:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:sas.com/certificate-file-format: {}
+            f:sas.com/kustomize-base: {}
+            f:sas.com/tls-enabled-ports: {}
+            f:sas.com/tls-mode: {}
+            f:seccomp.security.alpha.kubernetes.io/pod: {}
+            f:sidecar.istio.io/inject: {}
+          f:labels:
+            .: {}
+            f:launcher.sas.com/job-type: {}
+        f:spec:
+          f:affinity:
+            .: {}
+            f:nodeAffinity:
+              .: {}
+              f:preferredDuringSchedulingIgnoredDuringExecution: {}
+              f:requiredDuringSchedulingIgnoredDuringExecution:
+                .: {}
+                f:nodeSelectorTerms: {}
+            f:podAffinity: {}
+            f:podAntiAffinity: {}
+          f:automountServiceAccountToken: {}
+          f:containers:
+            k:{"name":"sas-programming-environment"}:
+              .: {}
+              f:env:
+                .: {}
+                k:{"name":"COMPUTESERVER_USER_CONFIG"}:
+                  .: {}
+                  f:name: {}
+                  f:value: {}
+                k:{"name":"COMPUTESERVER_VAR_PATH"}:
+                  .: {}
+                  f:name: {}
+                  f:value: {}
+                k:{"name":"LAUNCH_AS_JOB"}:
+                  .: {}
+                  f:name: {}
+                  f:value: {}
+                k:{"name":"SAS_K8S_NAMESPACE"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:fieldRef:
+                      .: {}
+                      f:apiVersion: {}
+                      f:fieldPath: {}
+                k:{"name":"SAS_K8S_POD_NAME"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:fieldRef:
+                      .: {}
+                      f:apiVersion: {}
+                      f:fieldPath: {}
+                k:{"name":"SAS_LICENSE"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:secretKeyRef:
+                      .: {}
+                      f:key: {}
+                      f:name: {}
+                k:{"name":"SAS_URL_SERVICE_TEMPLATE"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:configMapKeyRef:
+                      .: {}
+                      f:key: {}
+                      f:name: {}
+                k:{"name":"SASCLOUDNATIVE"}:
+                  .: {}
+                  f:name: {}
+                  f:value: {}
+              f:envFrom: {}
+              f:image: {}
+              f:imagePullPolicy: {}
+              f:name: {}
+              f:resources: {}
+              f:securityContext:
+                .: {}
+                f:allowPrivilegeEscalation: {}
+                f:capabilities:
+                  .: {}
+                  f:drop: {}
+                f:privileged: {}
+                f:readOnlyRootFilesystem: {}
+              f:terminationMessagePath: {}
+              f:terminationMessagePolicy: {}
+              f:volumeMounts:
+                .: {}
+                k:{"mountPath":"/config"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/export/pvs/viya4-nfsdata"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/export/pvs/viya4-nfsdata/data-access/access-clients/python/Python-3.8.5"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                  f:readOnly: {}
+                k:{"mountPath":"/export/pvs/viya4-nfsdata/sasdata"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/mnt/viya-share/data"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/mnt/viya-share/homes"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/opt/sas/viya/config/data/modelsvr/astore"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                  f:subPath: {}
+                k:{"mountPath":"/opt/sas/viya/config/data/modelsvr/resources"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                  f:subPath: {}
+                k:{"mountPath":"/opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                  f:subPath: {}
+                k:{"mountPath":"/opt/sas/viya/config/etc/SASSecurityCertificateFramework/private"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                  f:subPath: {}
+                k:{"mountPath":"/opt/sas/viya/config/var"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/opt/sas/viya/home/commonfiles"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                  f:readOnly: {}
+                k:{"mountPath":"/opt/sas/viya/home/share/refdata/qkb"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/rdutil"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/sashelp"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/sasuser"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/security"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/tmp"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+          f:dnsPolicy: {}
+          f:imagePullSecrets:
+            .: {}
+            k:{"name":"sas-image-pull-secrets-5g77d6bg8h"}:
+              .: {}
+              f:name: {}
+          f:initContainers:
+            .: {}
+            k:{"name":"sas-certframe"}:
+              .: {}
+              f:env:
+                .: {}
+                k:{"name":"KUBE_POD_NAME"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:fieldRef:
+                      .: {}
+                      f:apiVersion: {}
+                      f:fieldPath: {}
+                k:{"name":"SAS_ADDITIONAL_CA_CERTIFICATES_DIR"}:
+                  .: {}
+                  f:name: {}
+                  f:value: {}
+                k:{"name":"SAS_CERTFRAME_TOKEN_DIR"}:
+                  .: {}
+                  f:name: {}
+                  f:value: {}
+              f:envFrom: {}
+              f:image: {}
+              f:imagePullPolicy: {}
+              f:name: {}
+              f:resources:
+                .: {}
+                f:limits:
+                  .: {}
+                  f:cpu: {}
+                  f:memory: {}
+                f:requests:
+                  .: {}
+                  f:cpu: {}
+                  f:memory: {}
+              f:securityContext:
+                .: {}
+                f:allowPrivilegeEscalation: {}
+                f:capabilities:
+                  .: {}
+                  f:drop: {}
+                f:privileged: {}
+                f:readOnlyRootFilesystem: {}
+              f:terminationMessagePath: {}
+              f:terminationMessagePolicy: {}
+              f:volumeMounts:
+                .: {}
+                k:{"mountPath":"/certframe-token"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/customer-provided-ca-certificates"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/security"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+            k:{"name":"sas-config-init"}:
+              .: {}
+              f:env:
+                .: {}
+                k:{"name":"SAS_K8S_NAMESPACE"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:fieldRef:
+                      .: {}
+                      f:apiVersion: {}
+                      f:fieldPath: {}
+                k:{"name":"SAS_K8S_POD_NAME"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:fieldRef:
+                      .: {}
+                      f:apiVersion: {}
+                      f:fieldPath: {}
+                k:{"name":"SSL_CERT_FILE"}:
+                  .: {}
+                  f:name: {}
+                  f:value: {}
+              f:envFrom: {}
+              f:image: {}
+              f:imagePullPolicy: {}
+              f:name: {}
+              f:resources: {}
+              f:securityContext:
+                .: {}
+                f:allowPrivilegeEscalation: {}
+                f:capabilities:
+                  .: {}
+                  f:drop: {}
+                f:privileged: {}
+                f:readOnlyRootFilesystem: {}
+                f:runAsGroup: {}
+                f:runAsUser: {}
+              f:terminationMessagePath: {}
+              f:terminationMessagePolicy: {}
+              f:volumeMounts:
+                .: {}
+                k:{"mountPath":"/config"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/opt/sas/viya/config/var"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/opt/sas/viya/home/commonfiles"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                  f:readOnly: {}
+                k:{"mountPath":"/security"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                k:{"mountPath":"/tmp"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+          f:restartPolicy: {}
+          f:schedulerName: {}
+          f:securityContext:
+            .: {}
+            f:runAsNonRoot: {}
+          f:serviceAccount: {}
+          f:serviceAccountName: {}
+          f:terminationGracePeriodSeconds: {}
+          f:tolerations: {}
+          f:volumes:
+            .: {}
+            k:{"name":"astores-volume"}:
+              .: {}
+              f:name: {}
+              f:persistentVolumeClaim:
+                .: {}
+                f:claimName: {}
+            k:{"name":"certframe-token"}:
+              .: {}
+              f:name: {}
+              f:secret:
+                .: {}
+                f:defaultMode: {}
+                f:secretName: {}
+            k:{"name":"commonfilesvols"}:
+              .: {}
+              f:name: {}
+              f:persistentVolumeClaim:
+                .: {}
+                f:claimName: {}
+                f:readOnly: {}
+            k:{"name":"config"}:
+              .: {}
+              f:emptyDir: {}
+              f:name: {}
+            k:{"name":"config-init-tmp"}:
+              .: {}
+              f:emptyDir: {}
+              f:name: {}
+            k:{"name":"customer-provided-ca-certificates"}:
+              .: {}
+              f:configMap:
+                .: {}
+                f:defaultMode: {}
+                f:name: {}
+              f:name: {}
+            k:{"name":"nfs-data"}:
+              .: {}
+              f:name: {}
+              f:nfs:
+                .: {}
+                f:path: {}
+                f:server: {}
+            k:{"name":"nfs-homes"}:
+              .: {}
+              f:name: {}
+              f:nfs:
+                .: {}
+                f:path: {}
+                f:server: {}
+            k:{"name":"nfs-sasdata"}:
+              .: {}
+              f:name: {}
+              f:nfs:
+                .: {}
+                f:path: {}
+                f:server: {}
+            k:{"name":"nfsdata"}:
+              .: {}
+              f:name: {}
+              f:nfs:
+                .: {}
+                f:path: {}
+                f:server: {}
+            k:{"name":"python-volume"}:
+              .: {}
+              f:name: {}
+              f:nfs:
+                .: {}
+                f:path: {}
+                f:server: {}
+            k:{"name":"sas-quality-knowledge-base-volume"}:
+              .: {}
+              f:name: {}
+              f:persistentVolumeClaim:
+                .: {}
+                f:claimName: {}
+            k:{"name":"sas-rdutil-dir"}:
+              .: {}
+              f:configMap:
+                .: {}
+                f:defaultMode: {}
+                f:name: {}
+              f:name: {}
+            k:{"name":"sashelp"}:
+              .: {}
+              f:emptyDir: {}
+              f:name: {}
+            k:{"name":"sasuser"}:
+              .: {}
+              f:emptyDir: {}
+              f:name: {}
+            k:{"name":"security"}:
+              .: {}
+              f:emptyDir: {}
+              f:name: {}
+            k:{"name":"tmp"}:
+              .: {}
+              f:emptyDir: {}
+              f:name: {}
+            k:{"name":"viya"}:
+              .: {}
+              f:hostPath:
+                .: {}
+                f:path: {}
+                f:type: {}
+              f:name: {}
+    manager: kubectl-client-side-apply
+    operation: Update
+    time: "2022-04-13T22:13:09Z"
+  name: sas-compute-job-config
+  namespace: viya4
+  resourceVersion: "119502904"
+  uid: 70f1fca8-4a9c-40ab-9397-5a9341ed1702
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: sas-programming-environment
+      sas.com/tls-enabled-ports: all
+      sas.com/tls-mode: full-stack
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+      sidecar.istio.io/inject: "false"
+    creationTimestamp: null
+    labels:
+      launcher.sas.com/job-type: compute-server
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - compute
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - cas
+              - stateless
+              - stateful
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+      podAffinity: {}
+      podAntiAffinity: {}
+    automountServiceAccountToken: true
+    containers:
+    - env:
+      - name: SAS_K8S_POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: SAS_K8S_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      - name: SAS_LICENSE
+        valueFrom:
+          secretKeyRef:
+            key: SAS_LICENSE
+            name: sas-license-9b5h2d4mck
+      - name: SAS_URL_SERVICE_TEMPLATE
+        valueFrom:
+          configMapKeyRef:
+            key: SAS_URL_SERVICE_TEMPLATE
+            name: sas-shared-config-g2h4f4c2db
+      - name: SASCLOUDNATIVE
+        value: "1"
+      - name: LAUNCH_AS_JOB
+        value: "true"
+      - name: COMPUTESERVER_USER_CONFIG
+        value: /config
+      - name: COMPUTESERVER_VAR_PATH
+        value: /opt/sas/viya/config/var
+      envFrom:
+      - configMapRef:
+          name: sas-tls-config-f8ccd48c6m
+      - configMapRef:
+          name: sas-access-config-57fdtkg7d6
+      - configMapRef:
+          name: sas-deployment-metadata-6g8f455dkb
+      - configMapRef:
+          name: sas-launcher-lockdown-config-g96dc2km8g
+      - configMapRef:
+          name: sas-programming-environment-path-config-dt5gfd629h
+      - configMapRef:
+          name: sas-compute-server-config-6b9kc94k8g
+      - configMapRef:
+          name: sas-shared-config-g2h4f4c2db
+      - configMapRef:
+          name: sas-open-source-config-python-hc57h6hmkk
+      image: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-programming-environment:1.27.29-20220302.1646244904986
+      imagePullPolicy: IfNotPresent
+      name: sas-programming-environment
+      resources: {}
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+      - mountPath: /sasuser
+        name: sasuser
+      - mountPath: /sashelp
+        name: sashelp
+      - mountPath: /config
+        name: config
+      - mountPath: /opt/sas/viya/config/var
+        name: viya
+      - mountPath: /opt/sas/viya/home/commonfiles
+        name: commonfilesvols
+        readOnly: true
+      - mountPath: /security
+        name: security
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+        name: security
+        subPath: cacerts
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+        name: security
+        subPath: private
+      - mountPath: /mnt/viya-share/data
+        name: nfs-data
+      - mountPath: /mnt/viya-share/homes
+        name: nfs-homes
+      - mountPath: /export/pvs/viya4-nfsdata/sasdata
+        name: nfs-sasdata
+      - mountPath: /export/pvs/viya4-nfsdata/data-access/access-clients/python/Python-3.8.5
+        name: python-volume
+        readOnly: true
+      - mountPath: /opt/sas/viya/config/data/modelsvr/astore
+        name: astores-volume
+        subPath: models
+      - mountPath: /opt/sas/viya/config/data/modelsvr/resources
+        name: astores-volume
+        subPath: resources
+      - mountPath: /rdutil
+        name: sas-rdutil-dir
+      - mountPath: /opt/sas/viya/home/share/refdata/qkb
+        name: sas-quality-knowledge-base-volume
+      - mountPath: /export/pvs/viya4-nfsdata
+        name: nfsdata
+    dnsPolicy: ClusterFirst
+    imagePullSecrets:
+    - name: sas-image-pull-secrets-5g77d6bg8h
+    initContainers:
+    - env:
+      - name: KUBE_POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: SAS_CERTFRAME_TOKEN_DIR
+        value: /certframe-token
+      - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+        value: /customer-provided-ca-certificates
+      envFrom:
+      - configMapRef:
+          name: sas-certframe-config-2ch97fd95b
+      - configMapRef:
+          name: sas-certframe-ingress-certificate-config-cmm2t44t88
+      - configMapRef:
+          name: sas-certframe-user-config-kfckf2c4g8
+      image: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-certframe:3.24.3-20220208.1644359596455
+      imagePullPolicy: IfNotPresent
+      name: sas-certframe
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /certframe-token
+        name: certframe-token
+      - mountPath: /security
+        name: security
+      - mountPath: /customer-provided-ca-certificates
+        name: customer-provided-ca-certificates
+    - env:
+      - name: SAS_K8S_POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: SAS_K8S_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      - name: SSL_CERT_FILE
+        value: /security/trustedcerts.pem
+      envFrom:
+      - configMapRef:
+          name: sas-go-config-tbg2228dk9
+      - configMapRef:
+          name: sas-shared-config-g2h4f4c2db
+      - secretRef:
+          name: sas-consul-client
+      - configMapRef:
+          name: sas-programming-environment-path-config-dt5gfd629h
+      - configMapRef:
+          name: sas-deployment-metadata-6g8f455dkb
+      - configMapRef:
+          name: sas-programming-environment-java-policy-config-b5dc9m8dfg
+      - configMapRef:
+          name: sas-access-config-57fdtkg7d6
+      - configMapRef:
+          name: sas-compute-server-config-6b9kc94k8g
+      image: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-config-init:1.11.4-20220310.1646911095636
+      imagePullPolicy: IfNotPresent
+      name: sas-config-init
+      resources: {}
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsGroup: 1001
+        runAsUser: 1001
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /tmp
+        name: config-init-tmp
+      - mountPath: /config
+        name: config
+      - mountPath: /opt/sas/viya/config/var
+        name: viya
+      - mountPath: /opt/sas/viya/home/commonfiles
+        name: commonfilesvols
+        readOnly: true
+      - mountPath: /security
+        name: security
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      runAsNonRoot: true
+    serviceAccount: sas-programming-environment
+    serviceAccountName: sas-programming-environment
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: compute
+    volumes:
+    - emptyDir: {}
+      name: tmp
+    - emptyDir: {}
+      name: config-init-tmp
+    - emptyDir: {}
+      name: sasuser
+    - emptyDir: {}
+      name: sashelp
+    - emptyDir: {}
+      name: config
+    - hostPath:
+        path: /mnt
+        type: Directory
+      name: viya
+    - name: commonfilesvols
+      persistentVolumeClaim:
+        claimName: sas-commonfiles
+        readOnly: true
+    - name: certframe-token
+      secret:
+        defaultMode: 420
+        secretName: sas-certframe-token
+    - emptyDir: {}
+      name: security
+    - configMap:
+        defaultMode: 420
+        name: sas-customer-provided-ca-certificates-29kdmk686c
+      name: customer-provided-ca-certificates
+    - name: nfs-data
+      nfs:
+        path: /export/viya4/data
+        server: 10.120.14.4
+    - name: nfs-homes
+      nfs:
+        path: /export/viya4/homes
+        server: 10.120.14.4
+    - name: nfs-sasdata
+      nfs:
+        path: /export/pvs/viya4-nfsdata/sasdata
+        server: 10.120.14.4
+    - name: python-volume
+      nfs:
+        path: /export/pvs/viya4-nfsdata/data-access/access-clients/python/Python-3.8.5
+        server: 10.120.14.4
+    - name: astores-volume
+      persistentVolumeClaim:
+        claimName: sas-microanalytic-score-astores
+    - name: sas-quality-knowledge-base-volume
+      persistentVolumeClaim:
+        claimName: sas-quality-knowledge-base
+    - configMap:
+        defaultMode: 493
+        name: sas-qkb-management-scripts
+      name: sas-rdutil-dir
+    - name: nfsdata
+      nfs:
+        path: /export/pvs/viya4-nfsdata
+        server: 10.120.14.4
